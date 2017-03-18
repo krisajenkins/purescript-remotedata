@@ -11,8 +11,8 @@ import Data.Functor (class Functor)
 import Data.Generic (class Generic)
 import Data.Lens (Prism', is, prism')
 import Data.Maybe (Maybe(..))
+import Data.Monoid ((<>))
 import Data.Show (class Show, show)
-import Prelude ((<>))
 
 -- | A datatype representing fetched data.
 -- |

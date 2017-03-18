@@ -3,6 +3,7 @@ module Network.RemoteData where
 import Control.Applicative (class Applicative)
 import Control.Apply (class Apply)
 import Control.Bind (class Bind)
+import Control.Monad (class Monad)
 import Data.Bifunctor (class Bifunctor)
 import Data.Either (Either(..))
 import Data.Eq (class Eq, eq)
@@ -78,6 +79,8 @@ instance showRemoteData :: (Show e, Show a) => Show (RemoteData e a) where
   show Loading = "RemoteData.Loading"
   show (Failure err) = "RemoteData.Failure " <> show err
   show (Success value) = "RemoteData.Success " <> show value
+
+instance monadRemoteData :: Monad (RemoteData e)
 
 ------------------------------------------------------------
 

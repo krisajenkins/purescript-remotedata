@@ -1,0 +1,20 @@
+# RemoteData for PureScript
+
+Tools for fetching data from remote sources (incl. HTTP). Ported from the original Elm librayr.
+
+For a full discussion of what this package does and why it
+exists, [read this post](http://blog.jenkster.com/2016/06/how-elm-slays-a-ui-antipattern.html).
+
+## Building & Testing
+
+```
+pulp test
+```
+
+...will run the whole build and test suite.
+
+## License
+
+Copyright © 2017 Kris Jenkins
+
+Distributed under the MIT license.

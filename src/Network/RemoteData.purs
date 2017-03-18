@@ -33,6 +33,19 @@ data RemoteData e a
 
 derive instance genericRemoteData :: (Generic e, Generic a) => Generic (RemoteData e a)
 
+instance eqRemoteData :: (Eq e, Eq a) => Eq (RemoteData e a) where
+  eq NotAsked NotAsked = true
+  eq Loading Loading = true
+  eq (Failure e1) (Failure e2) = eq e1 e2
+  eq (Success a1) (Success a2) = eq a1 a2
+  eq _ _ = false
+
+instance showRemoteData :: (Show e, Show a) => Show (RemoteData e a) where
+  show NotAsked = "RemoteData.NotAsked"
+  show Loading = "RemoteData.Loading"
+  show (Failure err) = "RemoteData.Failure " <> show err
+  show (Success value) = "RemoteData.Success " <> show value
+
 -- | Maps a function to the `Success` values.
 instance functorRemoteData :: Functor (RemoteData e) where
   map f NotAsked = NotAsked
@@ -66,19 +79,6 @@ instance bindRemoteData :: Bind (RemoteData e) where
 
 instance applicativeRemoteData :: Applicative (RemoteData e) where
   pure value = Success value
-
-instance eqRemoteData :: (Eq e, Eq a) => Eq (RemoteData e a) where
-  eq NotAsked NotAsked = true
-  eq Loading Loading = true
-  eq (Failure e1) (Failure e2) = eq e1 e2
-  eq (Success a1) (Success a2) = eq a1 a2
-  eq _ _ = false
-
-instance showRemoteData :: (Show e, Show a) => Show (RemoteData e a) where
-  show NotAsked = "RemoteData.NotAsked"
-  show Loading = "RemoteData.Loading"
-  show (Failure err) = "RemoteData.Failure " <> show err
-  show (Success value) = "RemoteData.Success " <> show value
 
 instance monadRemoteData :: Monad (RemoteData e)
 

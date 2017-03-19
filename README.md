@@ -1,5 +1,7 @@
 # RemoteData for PureScript
 
+[![Build Status](https://travis-ci.org/krisajenkins/purescript-remotedata.svg?branch=master)](https://travis-ci.org/krisajenkins/purescript-remotedata)
+
 Tools for fetching data from remote sources (incl. HTTP). Ported from the original Elm library.
 
 For a full discussion of what this package does and why it

@@ -26,5 +26,5 @@ tests = do
       equal (show (Failure "Error!" :: RemoteData String Int)) "RemoteData.Failure \"Error!\""
       equal (show (Success 5 :: RemoteData String Int)) "RemoteData.Success 5"
     test "bifunctor" do
-      equal (Success 10) (rmap ((*) 2) (Success 2 :: RemoteData String Int))
-      equal (Failure "SEGFAULT!") (lmap (\ s -> s <> "!") (Failure "SEGFAULT" :: RemoteData String Int))
+      equal (Success 10) (rmap ((*) 2) (Success 5 :: RemoteData String Int))
+      equal (Failure "SEGFAULT!") (lmap (flip append "!") (Failure "SEGFAULT" :: RemoteData String Int))

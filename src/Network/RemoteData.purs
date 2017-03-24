@@ -63,9 +63,9 @@ instance applyRemoteData :: Apply (RemoteData e) where
   apply (Success f) (Success value) = Success (f value)
 
 instance bindRemoteData :: Bind (RemoteData e) where
-  bind NotAsked f = NotAsked
-  bind Loading f = Loading
-  bind (Failure err) f = (Failure err)
+  bind NotAsked _ = NotAsked
+  bind Loading _ = Loading
+  bind (Failure err) _ = (Failure err)
   bind (Success value) f = f value
 
 instance applicativeRemoteData :: Applicative (RemoteData e) where

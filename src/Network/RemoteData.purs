@@ -13,6 +13,7 @@ import Data.Lens (Prism', is, prism')
 import Data.Maybe (Maybe(..))
 import Data.Monoid ((<>))
 import Data.Show (class Show, show)
+import Prelude (id)
 
 -- | A datatype representing fetched data.
 -- |
@@ -99,11 +100,19 @@ fromEither :: forall e a. Either e a -> RemoteData e a
 fromEither (Left err) = Failure err
 fromEither (Right value) = Success value
 
+-- | Takes a default value, a function, and a `RemoteData` value. If
+-- | the data is `Success`, apply the function to the value, otherwise
+-- | return the default.
+-- |
+-- | See also `withDefault`.
+maybe :: forall e a b. b -> (a -> b) -> RemoteData e a -> b
+maybe default' f (Success value) = f value
+maybe default' f _ = default'
+
 -- | If the `RemoteData` has been successfully loaded, return that,
 -- | otherwise return a default value.
 withDefault :: forall e a. a -> RemoteData e a -> a
-withDefault _ (Success value) = value
-withDefault default' _ = default'
+withDefault default' = maybe default' id
 
 ------------------------------------------------------------
 -- Prisms & Lenses (oh my!)

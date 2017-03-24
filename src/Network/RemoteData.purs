@@ -6,7 +6,7 @@ import Control.Bind (class Bind)
 import Control.Monad (class Monad)
 import Data.Bifunctor (class Bifunctor)
 import Data.Either (Either(..))
-import Data.Eq (class Eq, eq)
+import Data.Eq (class Eq)
 import Data.Functor (class Functor)
 import Data.Generic (class Generic)
 import Data.Lens (Prism', is, prism')
@@ -34,25 +34,15 @@ data RemoteData e a
 
 derive instance genericRemoteData :: (Generic e, Generic a) => Generic (RemoteData e a)
 
-instance eqRemoteData :: (Eq e, Eq a) => Eq (RemoteData e a) where
-  eq NotAsked NotAsked = true
-  eq Loading Loading = true
-  eq (Failure e1) (Failure e2) = eq e1 e2
-  eq (Success a1) (Success a2) = eq a1 a2
-  eq _ _ = false
+derive instance eqRemoteData :: (Eq e, Eq a) => Eq (RemoteData e a)
+
+derive instance functorRemoteData :: Functor (RemoteData e)
 
 instance showRemoteData :: (Show e, Show a) => Show (RemoteData e a) where
   show NotAsked = "RemoteData.NotAsked"
   show Loading = "RemoteData.Loading"
   show (Failure err) = "RemoteData.Failure " <> show err
   show (Success value) = "RemoteData.Success " <> show value
-
--- | Maps a function to the `Success` values.
-instance functorRemoteData :: Functor (RemoteData e) where
-  map f NotAsked = NotAsked
-  map f Loading = Loading
-  map f (Failure err) = Failure err
-  map f (Success value) = Success (f value)
 
 -- | Maps functions to the `Failure` and `Success` values.
 instance bifunctorRemoteData :: Bifunctor RemoteData where

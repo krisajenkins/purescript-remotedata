@@ -1,6 +1,7 @@
 module Test.Network.RemoteDataTest (tests) where
 
 import Prelude
+import Data.Bifunctor (lmap, rmap)
 import Network.RemoteData (RemoteData(..), isFailure, isSuccess)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (assert, assertFalse, equal)
@@ -24,3 +25,6 @@ tests = do
       equal (show (Loading :: RemoteData String Int)) "RemoteData.Loading"
       equal (show (Failure "Error!" :: RemoteData String Int)) "RemoteData.Failure \"Error!\""
       equal (show (Success 5 :: RemoteData String Int)) "RemoteData.Success 5"
+    test "bifunctor" do
+      equal (Success 10) (rmap ((*) 2) (Success 2 :: RemoteData String Int))
+      equal (Failure "SEGFAULT!") (lmap (\ s -> s <> "!") (Failure "SEGFAULT" :: RemoteData String Int))

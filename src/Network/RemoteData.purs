@@ -7,13 +7,14 @@ import Control.Monad (class Monad)
 import Data.Bifunctor (class Bifunctor)
 import Data.Either (Either(..))
 import Data.Eq (class Eq)
+import Data.Function (const, id)
 import Data.Functor (class Functor)
 import Data.Generic (class Generic)
-import Data.Lens (Prism', is, prism')
+import Data.Lens (Prism', is, prism)
 import Data.Maybe (Maybe(..))
 import Data.Monoid ((<>))
 import Data.Show (class Show, show)
-import Prelude (id)
+import Data.Unit (Unit, unit)
 
 -- | A datatype representing fetched data.
 -- |
@@ -107,30 +108,44 @@ withDefault default' = maybe default' id
 ------------------------------------------------------------
 -- Prisms & Lenses (oh my!)
 
-_failure :: forall e a. Prism' (RemoteData e a) e
-_failure = prism' Failure failureToMaybe
-  where failureToMaybe (Failure err) = Just err
-        failureToMaybe _ = Nothing
+_NotAsked :: forall a e. Prism' (RemoteData e a) Unit
+_NotAsked = prism (const NotAsked) unwrap
+  where
+    unwrap NotAsked = Right unit
+    unwrap y = Left y
 
-_success :: forall e a. Prism' (RemoteData e a) a
-_success = prism' Success toMaybe
+_Loading :: forall a e. Prism' (RemoteData e a) Unit
+_Loading = prism (const Loading) unwrap
+  where
+    unwrap Loading = Right unit
+    unwrap y = Left y
+
+_Failure :: forall a e. Prism' (RemoteData e a) e
+_Failure = prism Failure unwrap
+  where
+    unwrap (Failure x) = Right x
+    unwrap y = Left y
+
+_Success :: forall a e. Prism' (RemoteData e a) a
+_Success = prism Success unwrap
+  where
+    unwrap (Success x) = Right x
+    unwrap y = Left y
 
 ------------------------------------------------------------
 
 -- | Simple predicate.
 isNotAsked :: forall e a. RemoteData e a -> Boolean
-isNotAsked NotAsked = true
-isNotAsked _ = false
+isNotAsked = is _NotAsked
 
 -- | Simple predicate.
 isLoading :: forall e a. RemoteData e a -> Boolean
-isLoading Loading = true
-isLoading _ = false
+isLoading = is _Loading
 
 -- | Simple predicate.
 isFailure :: forall e a. RemoteData e a -> Boolean
-isFailure = is _failure
+isFailure = is _Failure
 
 -- | Simple predicate.
 isSuccess :: forall e a. RemoteData e a -> Boolean
-isSuccess = is _success
+isSuccess = is _Success

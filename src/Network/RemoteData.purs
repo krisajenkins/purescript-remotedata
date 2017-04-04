@@ -9,6 +9,7 @@ import Data.Either (Either(..))
 import Data.Eq (class Eq)
 import Data.Functor (class Functor)
 import Data.Generic (class Generic)
+import Data.Lens (Prism', is, prism')
 import Data.Maybe (Maybe(..))
 import Data.Monoid ((<>))
 import Data.Show (class Show, show)
@@ -104,6 +105,17 @@ withDefault :: forall e a. a -> RemoteData e a -> a
 withDefault default' = maybe default' id
 
 ------------------------------------------------------------
+-- Prisms & Lenses (oh my!)
+
+_failure :: forall e a. Prism' (RemoteData e a) e
+_failure = prism' Failure failureToMaybe
+  where failureToMaybe (Failure err) = Just err
+        failureToMaybe _ = Nothing
+
+_success :: forall e a. Prism' (RemoteData e a) a
+_success = prism' Success toMaybe
+
+------------------------------------------------------------
 
 -- | Simple predicate.
 isNotAsked :: forall e a. RemoteData e a -> Boolean
@@ -117,10 +129,8 @@ isLoading _ = false
 
 -- | Simple predicate.
 isFailure :: forall e a. RemoteData e a -> Boolean
-isFailure (Failure _) = true
-isFailure _ = false
+isFailure = is _failure
 
 -- | Simple predicate.
 isSuccess :: forall e a. RemoteData e a -> Boolean
-isSuccess (Success _) = true
-isSuccess _ = false
+isSuccess = is _success

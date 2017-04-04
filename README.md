@@ -11,6 +11,12 @@ exists, [read this post](http://blog.jenkster.com/2016/06/how-elm-slays-a-ui-ant
 
 [See the Pursuit package for full usage docs](https://pursuit.purescript.org/packages/purescript-remotedata/1.0.0).
 
+## Credits
+
+Thanks to [Jens Krause][sectore] for build improvements and lens advice.
+
+[sectore]: https://github.com/sectore
+
 ## Building & Testing
 
 ```

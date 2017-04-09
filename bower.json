@@ -12,14 +12,14 @@
         "output"
     ],
     "dependencies": {
-        "purescript-bifunctors": "^2.0.0",
-        "purescript-either": "^2.2.1",
-        "purescript-generics": "^3.3.0",
-        "purescript-profunctor-lenses": "^2.6.0"
+        "purescript-bifunctors": "^3.0.0",
+        "purescript-either": "^3.0.0",
+        "purescript-generics": "^4.0.0",
+        "purescript-profunctor-lenses": "^3.0.0"
     },
     "devDependencies": {
-        "purescript-test-unit": "^10.1.0",
-        "purescript-aff": "^2.0.3",
-        "purescript-psci-support": "^2.0.0"
+        "purescript-test-unit": "^11.0.0",
+        "purescript-aff": "^3.0.0",
+        "purescript-psci-support": "^3.0.0"
     }
 }

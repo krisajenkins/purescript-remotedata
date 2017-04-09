@@ -1,5 +1,6 @@
 {
     "name": "purescript-remotedata",
+    "author": "Kris Jenkins",
     "repository": {
         "type": "git",
         "url": "git@github.com:krisajenkins/purescript-remotedata.git"

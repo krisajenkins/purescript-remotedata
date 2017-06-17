@@ -32,6 +32,7 @@ data RemoteData e a
   | Loading
   | Failure e
   | Success a
+  | Refreshing a
 
 derive instance genericRemoteData :: (Generic e, Generic a) => Generic (RemoteData e a)
 
@@ -44,6 +45,7 @@ instance showRemoteData :: (Show e, Show a) => Show (RemoteData e a) where
   show Loading = "RemoteData.Loading"
   show (Failure err) = "RemoteData.Failure " <> show err
   show (Success value) = "RemoteData.Success " <> show value
+  show (Refreshing value) = "RemoteData.Refreshing " <> show value
 
 -- | Maps functions to the `Failure` and `Success` values.
 instance bifunctorRemoteData :: Bifunctor RemoteData where
@@ -51,8 +53,10 @@ instance bifunctorRemoteData :: Bifunctor RemoteData where
   bimap _ _ Loading = Loading
   bimap f _ (Failure err) = Failure (f err)
   bimap _ g (Success value) = Success (g value)
+  bimap _ g (Refreshing value) = Refreshing (g value)
 
 -- | If both values are `Success`, the function is applied.
+-- | If both values are `Refreshing`, the function is applied.
 -- | If both are `Failure`, the first failure is returned.
 instance applyRemoteData :: Apply (RemoteData e) where
   apply NotAsked _ = NotAsked
@@ -62,12 +66,16 @@ instance applyRemoteData :: Apply (RemoteData e) where
   apply (Failure err) _ = Failure err
   apply _ (Failure err) = Failure err
   apply (Success f) (Success value) = Success (f value)
+  apply (Refreshing f) (Refreshing value) = Refreshing (f value)
+  apply (Refreshing f) (Success value) = Success (f value)
+  apply (Success f) (Refreshing value) = Success (f value)
 
 instance bindRemoteData :: Bind (RemoteData e) where
   bind NotAsked _ = NotAsked
   bind Loading _ = Loading
   bind (Failure err) _ = (Failure err)
   bind (Success value) f = f value
+  bind (Refreshing value) f = f value
 
 instance applicativeRemoteData :: Applicative (RemoteData e) where
   pure value = Success value
@@ -132,6 +140,12 @@ _Success = prism Success unwrap
     unwrap (Success x) = Right x
     unwrap y = Left y
 
+_Refreshing :: forall a e. Prism' (RemoteData e a) a
+_Refreshing = prism Refreshing unwrap
+  where
+    unwrap (Refreshing x) = Right x
+    unwrap y = Left y
+
 ------------------------------------------------------------
 
 -- | Simple predicate.
@@ -149,3 +163,7 @@ isFailure = is _Failure
 -- | Simple predicate.
 isSuccess :: forall e a. RemoteData e a -> Boolean
 isSuccess = is _Success
+
+-- | Simple predicate.
+isRefreshing :: forall e a. RemoteData e a -> Boolean
+isRefreshing = is _Refreshing

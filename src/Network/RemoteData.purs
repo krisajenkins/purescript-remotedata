@@ -55,13 +55,13 @@ instance bifunctorRemoteData :: Bifunctor RemoteData where
 -- | If both values are `Success`, the function is applied.
 -- | If both are `Failure`, the first failure is returned.
 instance applyRemoteData :: Apply (RemoteData e) where
+  apply (Success f) (Success value) = Success (f value)
+  apply (Failure err) _ = Failure err
+  apply _ (Failure err) = Failure err
   apply NotAsked _ = NotAsked
   apply _ NotAsked = NotAsked
   apply Loading _ = Loading
   apply _ Loading = Loading
-  apply (Failure err) _ = Failure err
-  apply _ (Failure err) = Failure err
-  apply (Success f) (Success value) = Success (f value)
 
 instance bindRemoteData :: Bind (RemoteData e) where
   bind NotAsked _ = NotAsked

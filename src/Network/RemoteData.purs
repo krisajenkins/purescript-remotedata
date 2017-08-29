@@ -4,6 +4,7 @@ import Control.Applicative (class Applicative)
 import Control.Apply (class Apply)
 import Control.Bind (class Bind)
 import Control.Monad (class Monad)
+import Control.Monad.Error.Class (class MonadError, class MonadThrow)
 import Data.Bifunctor (class Bifunctor)
 import Data.Either (Either(..))
 import Data.Eq (class Eq)
@@ -73,6 +74,15 @@ instance applicativeRemoteData :: Applicative (RemoteData e) where
   pure value = Success value
 
 instance monadRemoteData :: Monad (RemoteData e)
+
+instance monadThrowRemoteData :: MonadThrow e (RemoteData e) where
+  throwError = Failure
+
+instance monadErrorRemoteData :: MonadError e (RemoteData e) where
+  catchError (Failure e) f = f e
+  catchError (Success value) _ = Success value
+  catchError NotAsked _ = NotAsked
+  catchError Loading _ = Loading
 
 ------------------------------------------------------------
 

@@ -1,26 +1,26 @@
 {
-    "name": "purescript-remotedata",
-    "author": "Kris Jenkins",
-    "repository": {
-        "type": "git",
-        "url": "git@github.com:krisajenkins/purescript-remotedata.git"
-    },
-    "license": "MIT",
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "output"
-    ],
-    "dependencies": {
-        "purescript-bifunctors": "^3.0.0",
-        "purescript-either": "^3.0.0",
-        "purescript-generics": "^4.0.0",
-        "purescript-profunctor-lenses": "^3.0.0"
-    },
-    "devDependencies": {
-        "purescript-test-unit": "^11.0.0",
-        "purescript-aff": "^3.0.0",
-        "purescript-psci-support": "^3.0.0"
-    }
+  "name": "purescript-remotedata",
+  "author": "Kris Jenkins",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:krisajenkins/purescript-remotedata.git"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-bifunctors": "^3.0.0",
+    "purescript-either": "^3.0.0",
+    "purescript-profunctor-lenses": "^3.0.0",
+    "purescript-generics-rep": "^5.4.0"
+  },
+  "devDependencies": {
+    "purescript-test-unit": "^11.0.0",
+    "purescript-aff": "^3.0.0",
+    "purescript-psci-support": "^3.0.0"
+  }
 }

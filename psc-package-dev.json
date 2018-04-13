@@ -6,7 +6,7 @@
         "psci-support",
         "bifunctors",
         "either",
-        "generics",
+        "generics-rep",
         "profunctor-lenses"
     ]
 }

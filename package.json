@@ -6,8 +6,7 @@
     "directories": {
         "test": "test"
     },
-    "dependencies": {
-    },
+    "dependencies": {},
     "devDependencies": {
         "bower": "^1.8.0",
         "pulp": "^11.0.0",

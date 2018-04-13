@@ -4,6 +4,7 @@ import Control.Applicative (class Applicative)
 import Control.Apply (class Apply)
 import Control.Bind (class Bind)
 import Control.Monad (class Monad)
+import Control.Monad.Error.Class (class MonadError, class MonadThrow)
 import Data.Bifunctor (class Bifunctor)
 import Data.Either (Either(..))
 import Data.Eq (class Eq)
@@ -59,13 +60,13 @@ instance bifunctorRemoteData :: Bifunctor RemoteData where
 -- | If both values are `Refreshing`, the function is applied.
 -- | If both are `Failure`, the first failure is returned.
 instance applyRemoteData :: Apply (RemoteData e) where
+  apply (Success f) (Success value) = Success (f value)
+  apply (Failure err) _ = Failure err
+  apply _ (Failure err) = Failure err
   apply NotAsked _ = NotAsked
   apply _ NotAsked = NotAsked
   apply Loading _ = Loading
   apply _ Loading = Loading
-  apply (Failure err) _ = Failure err
-  apply _ (Failure err) = Failure err
-  apply (Success f) (Success value) = Success (f value)
   apply (Refreshing f) (Refreshing value) = Refreshing (f value)
   apply (Refreshing f) (Success value) = Success (f value)
   apply (Success f) (Refreshing value) = Success (f value)
@@ -81,6 +82,16 @@ instance applicativeRemoteData :: Applicative (RemoteData e) where
   pure value = Success value
 
 instance monadRemoteData :: Monad (RemoteData e)
+
+instance monadThrowRemoteData :: MonadThrow e (RemoteData e) where
+  throwError = Failure
+
+instance monadErrorRemoteData :: MonadError e (RemoteData e) where
+  catchError (Failure e) f = f e
+  catchError (Success value) _ = Success value
+  catchError NotAsked _ = NotAsked
+  catchError Loading _ = Loading
+  catchError (Refreshing value) _ = Refreshing value
 
 ------------------------------------------------------------
 

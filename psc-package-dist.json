@@ -1,0 +1,11 @@
+{
+    "name": "purescript-remotedata",
+    "set": "master",
+    "source": "https://github.com/purescript/package-sets.git",
+    "depends": [
+        "bifunctors",
+        "either",
+        "generics",
+        "profunctor-lenses"
+    ]
+}

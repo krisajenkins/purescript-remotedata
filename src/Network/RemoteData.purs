@@ -10,7 +10,7 @@ import Data.Either (Either(..))
 import Data.Eq (class Eq)
 import Data.Function (const, id)
 import Data.Functor (class Functor)
-import Data.Generic (class Generic)
+import Data.Generic.Rep
 import Data.Lens (Prism', is, prism)
 import Data.Maybe (Maybe(..))
 import Data.Monoid ((<>))
@@ -34,7 +34,7 @@ data RemoteData e a
   | Failure e
   | Success a
 
-derive instance genericRemoteData :: (Generic e, Generic a) => Generic (RemoteData e a)
+derive instance genericRemoteData :: Generic (RemoteData e a) _
 
 derive instance eqRemoteData :: (Eq e, Eq a) => Eq (RemoteData e a)
 

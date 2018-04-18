@@ -14,8 +14,10 @@ exists, [read this post](http://blog.jenkster.com/2016/06/how-elm-slays-a-ui-ant
 ## Credits
 
 Thanks to [Jens Krause][sectore] for build improvements and lens advice.
+Thanks to [Vasiliy Yorkin][vyorkin] for updating to `generics-rep`.
 
 [sectore]: https://github.com/sectore
+[vyorkin]: https://github.com/vyorkin
 
 ## Building & Testing
 

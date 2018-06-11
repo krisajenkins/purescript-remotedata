@@ -8,7 +8,7 @@ import Control.Monad.Error.Class (class MonadError, class MonadThrow)
 import Data.Bifunctor (class Bifunctor)
 import Data.Either (Either(..))
 import Data.Eq (class Eq)
-import Data.Function (const, id)
+import Data.Function (const, identity)
 import Data.Functor (class Functor)
 import Data.Generic.Rep
 import Data.Lens (Prism', is, prism)
@@ -113,7 +113,7 @@ maybe default' f _ = default'
 -- | If the `RemoteData` has been successfully loaded, return that,
 -- | otherwise return a default value.
 withDefault :: forall e a. a -> RemoteData e a -> a
-withDefault default' = maybe default' id
+withDefault default' = maybe default' identity
 
 ------------------------------------------------------------
 -- Prisms & Lenses (oh my!)

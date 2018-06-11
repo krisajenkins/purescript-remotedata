@@ -6,7 +6,7 @@ import Network.RemoteData (RemoteData(..), isFailure, isSuccess)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (assert, assertFalse, equal)
 
-tests :: forall e. TestSuite e
+tests :: TestSuite
 tests = do
   suite "RemoteData" do
     test "Applicative" do

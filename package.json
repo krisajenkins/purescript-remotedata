@@ -14,7 +14,8 @@
     },
     "scripts": {
         "postinstall": "bower cache clean && bower install",
-        "test": "pulp test"
+        "test": "pulp test",
+        "test:watch": "pulp -w test"
     },
     "repository": {
         "type": "git",

@@ -1,20 +1,24 @@
 module Network.RemoteData where
 
-import Control.Applicative (class Applicative)
+import Control.Applicative (class Applicative, pure)
 import Control.Apply (class Apply)
 import Control.Bind (class Bind)
 import Control.Monad (class Monad)
 import Control.Monad.Error.Class (class MonadError, class MonadThrow)
+import Data.Bifoldable (class Bifoldable, bifoldlDefault, bifoldrDefault)
 import Data.Bifunctor (class Bifunctor)
+import Data.Bitraversable (class Bitraversable, bisequenceDefault)
 import Data.Either (Either(..))
 import Data.Eq (class Eq)
+import Data.Foldable (class Foldable, foldlDefault, foldrDefault)
 import Data.Function (const, identity)
-import Data.Functor (class Functor)
-import Data.Generic.Rep
+import Data.Functor (class Functor, (<$>))
+import Data.Generic.Rep (class Generic)
 import Data.Lens (Prism', is, prism)
 import Data.Maybe (Maybe(..))
-import Data.Monoid ((<>))
+import Data.Monoid (mempty, (<>))
 import Data.Show (class Show, show)
+import Data.Traversable (class Traversable, sequenceDefault)
 import Data.Unit (Unit, unit)
 
 -- | A datatype representing fetched data.
@@ -83,6 +87,36 @@ instance monadErrorRemoteData :: MonadError e (RemoteData e) where
   catchError (Success value) _ = Success value
   catchError NotAsked _ = NotAsked
   catchError Loading _ = Loading
+
+instance foldableRemoteData :: Foldable (RemoteData e) where
+  foldMap f (Success a) = f a
+  foldMap _ (Failure e) = mempty
+  foldMap _ NotAsked = mempty
+  foldMap _ Loading = mempty
+  foldr f = foldrDefault f
+  foldl f = foldlDefault f
+
+instance traversableRemoteData :: Traversable (RemoteData e) where
+  traverse f (Success a) = Success <$> f a
+  traverse f (Failure e) = pure (Failure e)
+  traverse _ NotAsked = pure NotAsked
+  traverse _ Loading = pure Loading
+  sequence = sequenceDefault
+
+instance bifoldableRemoteData :: Bifoldable RemoteData where
+  bifoldMap _ f (Success a) = f a
+  bifoldMap f _ (Failure e) = f e
+  bifoldMap _ _ Loading = mempty
+  bifoldMap _ _ NotAsked = mempty
+  bifoldr f = bifoldrDefault f
+  bifoldl f = bifoldlDefault f
+
+instance bitraversableRemoteData :: Bitraversable RemoteData where
+  bitraverse _ f (Success a) = Success <$> f a
+  bitraverse f _ (Failure e) = Failure <$> f e
+  bitraverse _ _ NotAsked = pure NotAsked
+  bitraverse _ _ Loading = pure Loading
+  bisequence = bisequenceDefault
 
 ------------------------------------------------------------
 

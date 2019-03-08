@@ -1,7 +1,11 @@
 module Test.Network.RemoteDataTest (tests) where
 
 import Prelude
+
 import Data.Bifunctor (lmap, rmap)
+import Data.Foldable (foldMap)
+import Data.Maybe (Maybe(..))
+import Data.Traversable (traverse)
 import Network.RemoteData (RemoteData(..), isFailure, isSuccess)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (assert, assertFalse, equal)
@@ -28,3 +32,15 @@ tests = do
     test "Bifunctor" do
       equal (Success 10) (rmap ((*) 2) (Success 5 :: RemoteData String Int))
       equal (Failure "SEGFAULT!") (lmap (flip append "!") (Failure "SEGFAULT" :: RemoteData String Int))
+    test "Foldable" do
+      equal "Test" (foldMap identity (Success "Test"))
+      equal "" (foldMap identity (Failure "Error"))
+      equal "" (foldMap identity NotAsked)
+      equal "" (foldMap identity Loading)
+    test "Traversable"
+      let aTraversal :: RemoteData String Int -> Maybe (RemoteData String Int)
+          aTraversal = traverse pure
+      in do equal (Just (Success 7)) (aTraversal (Success 7))
+            equal (Just (Failure "error")) (aTraversal (Failure "error"))
+            equal (Just (Loading)) (aTraversal Loading)
+            equal (Just (NotAsked)) (aTraversal NotAsked)

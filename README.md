@@ -29,6 +29,6 @@ pulp test
 
 ## License
 
-Copyright © 2017-2018 Kris Jenkins
+Copyright © 2017-2019 Kris Jenkins
 
 Distributed under the MIT license.

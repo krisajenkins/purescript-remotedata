@@ -2,7 +2,9 @@ module Test.Network.RemoteDataTest (tests) where
 
 import Prelude
 
+import Data.Bifoldable (bifoldMap)
 import Data.Bifunctor (lmap, rmap)
+import Data.Bitraversable (bitraverse)
 import Data.Foldable (foldMap)
 import Data.Maybe (Maybe(..))
 import Data.Traversable (traverse)
@@ -44,3 +46,16 @@ tests = do
             equal (Just (Failure "error")) (aTraversal (Failure "error"))
             equal (Just (Loading)) (aTraversal Loading)
             equal (Just (NotAsked)) (aTraversal NotAsked)
+    test "Bifoldable"
+      let aBifold = bifoldMap (pure <<< show) pure
+      in do equal ["Test"] (aBifold (Success "Test"))
+            equal ["5"] (aBifold (Failure 5))
+            equal [] (aBifold Loading)
+            equal [] (aBifold NotAsked)
+    test "Bitraversable" do
+      let aBitraversal :: RemoteData String Int -> Maybe (RemoteData String String)
+          aBitraversal = bitraverse pure (pure <<< show)
+      equal (Just (Success "7")) (aBitraversal (Success 7))
+      equal (Just (Failure "error")) (aBitraversal (Failure "error"))
+      equal (Just (Loading)) (aBitraversal Loading)
+      equal (Just (NotAsked)) (aBitraversal NotAsked)

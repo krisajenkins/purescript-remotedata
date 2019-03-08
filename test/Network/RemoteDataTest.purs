@@ -20,11 +20,11 @@ tests = do
     test "isFailure" do
       assert "Failure is Failure" $ isFailure (Failure "err")
       assertFalse "Success is not Failure" $ isFailure (Success 5)
-    test "show" do
+    test "Show" do
       equal (show (NotAsked :: RemoteData String Int)) "RemoteData.NotAsked"
       equal (show (Loading :: RemoteData String Int)) "RemoteData.Loading"
       equal (show (Failure "Error!" :: RemoteData String Int)) "RemoteData.Failure \"Error!\""
       equal (show (Success 5 :: RemoteData String Int)) "RemoteData.Success 5"
-    test "bifunctor" do
+    test "Bifunctor" do
       equal (Success 10) (rmap ((*) 2) (Success 5 :: RemoteData String Int))
       equal (Failure "SEGFAULT!") (lmap (flip append "!") (Failure "SEGFAULT" :: RemoteData String Int))

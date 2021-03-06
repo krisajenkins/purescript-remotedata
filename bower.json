@@ -13,7 +13,7 @@
     "purescript-profunctor-lenses": "^7.0.0"
   },
   "devDependencies": {
-    "purescript-test-unit": "oreshinya/purescript-test-unit#update_deps",
+    "purescript-test-unit": "^16.0.0",
     "purescript-aff": "^6.0.0",
     "purescript-psci-support": "^5.0.0"
   }

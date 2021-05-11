@@ -90,7 +90,7 @@ instance monadErrorRemoteData :: MonadError e (RemoteData e) where
 
 instance foldableRemoteData :: Foldable (RemoteData e) where
   foldMap f (Success a) = f a
-  foldMap _ (Failure e) = mempty
+  foldMap _ (Failure _) = mempty
   foldMap _ NotAsked = mempty
   foldMap _ Loading = mempty
   foldr f = foldrDefault f
@@ -98,7 +98,7 @@ instance foldableRemoteData :: Foldable (RemoteData e) where
 
 instance traversableRemoteData :: Traversable (RemoteData e) where
   traverse f (Success a) = Success <$> f a
-  traverse f (Failure e) = pure (Failure e)
+  traverse _ (Failure e) = pure (Failure e)
   traverse _ NotAsked = pure NotAsked
   traverse _ Loading = pure Loading
   sequence = sequenceDefault
@@ -141,8 +141,8 @@ fromEither (Right value) = Success value
 -- |
 -- | See also `withDefault`.
 maybe :: forall e a b. b -> (a -> b) -> RemoteData e a -> b
-maybe default' f (Success value) = f value
-maybe default' f _ = default'
+maybe _ f (Success value) = f value
+maybe default' _ _ = default'
 
 -- | If the `RemoteData` has been successfully loaded, return that,
 -- | otherwise return a default value.

@@ -2,6 +2,12 @@
 
 [![Build Status](https://travis-ci.org/krisajenkins/purescript-remotedata.svg?branch=master)](https://travis-ci.org/krisajenkins/purescript-remotedata)
 
+<a href="https://pursuit.purescript.org/packages/purescript-remotedata">
+  <img src="https://pursuit.purescript.org/packages/purescript-remotedata/badge"
+       alt="purescript-remotedata on Pursuit">
+  </img>
+</a>
+
 Tools for fetching data from remote sources (incl. HTTP). Ported from the original Elm library.
 
 For a full discussion of what this package does and why it

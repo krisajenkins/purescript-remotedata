@@ -1,7 +1,5 @@
 # RemoteData for PureScript
 
-[![Build Status](https://travis-ci.org/krisajenkins/purescript-remotedata.svg?branch=master)](https://travis-ci.org/krisajenkins/purescript-remotedata)
-
 <a href="https://pursuit.purescript.org/packages/purescript-remotedata">
   <img src="https://pursuit.purescript.org/packages/purescript-remotedata/badge"
        alt="purescript-remotedata on Pursuit">

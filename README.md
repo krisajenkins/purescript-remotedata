@@ -15,6 +15,14 @@ exists, [read this post](http://blog.jenkster.com/2016/06/how-elm-slays-a-ui-ant
 
 [See the Pursuit package for full usage docs](https://pursuit.purescript.org/packages/purescript-remotedata/).
 
+## Building & Testing
+
+```
+npm test
+```
+
+...will run the whole build and test suite (by invoking spago).
+
 ## Credits
 
 Thanks to [Jens Krause][sectore] for build improvements and lens advice.
@@ -23,16 +31,8 @@ Thanks to [Vasiliy Yorkin][vyorkin] for updating to `generics-rep`.
 [sectore]: https://github.com/sectore
 [vyorkin]: https://github.com/vyorkin
 
-## Building & Testing
-
-```
-pulp test
-```
-
-...will run the whole build and test suite.
-
 ## License
 
-Copyright © 2017-2019 Kris Jenkins
+Copyright © 2017-2024 Kris Jenkins
 
 Distributed under the MIT license.

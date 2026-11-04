@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     utils.url = "github:numtide/flake-utils";
     easy-purescript-nix = {
       url = "github:justinwoo/easy-purescript-nix";
@@ -23,7 +23,7 @@
           with pkgs;
           mkShell {
             buildInputs = [
-              nodejs_20
+              nodejs_22
 
               easy-ps.purty
 
